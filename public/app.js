@@ -76,7 +76,8 @@ function showToast(message, variant = "success", labId = null) {
 async function api(path, options = {}) {
   const resp = await fetch(path, {
     cache: "no-store",
-    signal: AbortSignal.timeout(10000),
+    // Give the 20s provider deadline time to return its rules fallback.
+    signal: AbortSignal.timeout(path === "/api/insights" ? 30000 : 10000),
     ...options,
   });
   let data;
