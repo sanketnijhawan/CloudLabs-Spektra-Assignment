@@ -192,8 +192,25 @@ test("live API + DOM: dense view, filter race, focus, mutation, drawer, empty/er
       /SQLite|POST API|polling/,
     );
     app.closeOverlay();
+    // Scale real AbortSignals to exercise a provider timeout without a 20s test.
+    // The browser must still receive the server's rules response after that wait.
+    w.AbortSignal = { timeout: (ms) => AbortSignal.timeout(ms / 100) };
+    w.fetch = async (url, options) => {
+      if (url === '/api/insights') {
+        await new Promise((resolve, reject) => {
+          const timer = setTimeout(resolve, 210);
+          const abort = () => { clearTimeout(timer); reject(options.signal.reason); };
+          if (options.signal.aborted) abort();
+          else options.signal.addEventListener('abort', abort, { once: true });
+        });
+      }
+      return realFetch(url, options);
+    };
     doc.querySelector("#triageButton").click();
-    await until(() => doc.querySelector(".insight-mode"));
+    await until(() => !doc.querySelector('#triageReload').disabled);
+    assert.ok(doc.querySelector('.insight-mode'), 'provider timeout fallback must arrive before browser abort');
+    w.AbortSignal = AbortSignal;
+    w.fetch = realFetch;
     assert.equal(
       doc.querySelector(".insight-mode strong").textContent,
       "Rules-based assessment",
