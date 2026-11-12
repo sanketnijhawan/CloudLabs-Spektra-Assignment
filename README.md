@@ -6,7 +6,7 @@ A live instructor dashboard for a simulated Azure workshop with 120 learners.
 
 ![Workshop dashboard with 120 environments, session totals and failures prioritized](screenshots/workshop-desktop-120-rows.png)
 
-[Learner details](screenshots/learner-details.png) · [At-risk assessment: rules fallback](screenshots/at-risk-summary.png) · [Loading](screenshots/loading-state.png) · [Empty results](screenshots/empty-state.png) · [Connection loss](screenshots/connection-error.png) · [Mobile](screenshots/workshop-mobile.png) · [Recent activity](screenshots/recent-activity.png)
+[AI-assisted: genuine Gemini response](screenshots/ai-assisted-mode.png) · [AI unavailable: rules fallback](screenshots/ai-rules-fallback.png) · [Learner details](screenshots/learner-details.png) · [At-risk assessment: rules fallback](screenshots/at-risk-summary.png) · [Loading](screenshots/loading-state.png) · [Empty results](screenshots/empty-state.png) · [Connection loss](screenshots/connection-error.png) · [Mobile](screenshots/workshop-mobile.png) · [Recent activity](screenshots/recent-activity.png)
 
 ## Run
 
@@ -38,7 +38,7 @@ Spend is estimated in integer USD cents: previous attempts' accrued cost + hourl
 
 Rules flag failed environments, 20+ minutes on a step (critical at 40), provisioning for 12+ minutes, or at least two retries. An optional model receives up to fourteen flagged records and aggregate counts, then selects up to three representative lab IDs covering distinct signals. The server validates those IDs and constructs every displayed name and reason from the captured records. The model cannot write arbitrary displayed facts or mutate state.
 
-Missing configuration, invalid/duplicate/unknown IDs, additional output fields, malformed JSON, provider errors and a 6.5-second timeout fall back to the explicitly labelled rules-based assessment. Manual controls and the main queue remain available. The assessment displays its mode and snapshot timestamp.
+Missing configuration, invalid/duplicate/unknown IDs, additional output fields, malformed JSON, provider errors and a 20-second timeout fall back to the explicitly labelled rules-based assessment. Manual controls and the main queue remain available. The assessment displays its mode and snapshot timestamp.
 
 ### Optional provider configuration
 
@@ -70,8 +70,8 @@ npm run screenshots
 On Windows, `verify-windows.bat` runs these checks in order. Capture uses a separate temporary database and never resets the normal workshop.
 
 - Eleven backend tests and one real-HTTP/SQLite DOM integration test pass. They cover records, aggregates, spend, valid/invalid mutation, simulation, risk/fallback boundaries, filter races, focus, drawer updates, loading, empty results and recovery. Process cleanup waits for exit before removing SQLite files, including Windows retry handling.
-- The Windows browser capture run passed density, no document overflow, polling-focus and mutation checks. Eight app-only images are in `screenshots/`, including clean empty/mobile states and the deliberate connection-failure state.
-- A genuine Gemini call returned a validated shortlist of three labs. The candidate's live UI screenshot also showed AI-assisted mode with failure/retry and long-step reasons. The bundled automated at-risk capture intentionally demonstrates the no-key fallback; an app-only model-mode capture can supplement it.
+- The Windows browser capture run passed density, no document overflow, polling-focus and mutation checks. Eight automated app-only captures and two manually captured AI evidence images are in `screenshots/`, including clean empty/mobile states and the deliberate connection-failure state.
+- Two app-only screenshots show a successful Gemini 3.5 Flash-Lite shortlist of three real lab IDs (`ai-assisted-mode.png`) and the correctly labelled timeout fallback (`ai-rules-fallback.png`). The successful screenshot was captured after increasing the provider timeout from 6.5 to 20 seconds. The bundled automated at-risk capture separately demonstrates the no-key fallback. These are user-captured provider observations, not an independently reproduced live provider call in the repository audit.
 - Text/status contrast was checked numerically. Native controls, visible focus, row keyboard shortcuts, dialog focus handling and reduced-motion support are implemented. A complete accessibility audit and a separate 200% zoom walkthrough have not been claimed.
 
 See `REQUIREMENTS.md` for the final audit and `DEMO.md` for a 60–90 second walkthrough.

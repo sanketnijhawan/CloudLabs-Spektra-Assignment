@@ -9,12 +9,12 @@
 | Loading/empty/error/dense states | Real pending request, no results, initial failure/retry, marked stale data, 120 mounted rows | Tested; eight screenshot captures reviewed |
 | Server filtering/sorting/spend math | Node server operates on SQLite records; rate × runtime plus accrued cost | Implemented and tested |
 | Server-side state drift | Independent twelve-second simulator updates SQLite; browser polls every five seconds | Simulation tests and code verified |
-| One grounded AI feature | At-risk summary; model selects real flagged IDs; server supplies names/reasons | Genuine Gemini provider call and AI-assisted UI observed |
-| Graceful model failure and optional AI | Missing config, invalid output, provider error and timeout use rules; manual filters/actions remain available | Automated fallback checks; rules-mode screenshot included |
+| One grounded AI feature | At-risk summary; model selects real flagged IDs; server supplies names/reasons | Genuine Gemini selection visible in `screenshots/ai-assisted-mode.png`; candidate-observed provider call |
+| Graceful model failure and optional AI | Missing config, invalid output, provider error and timeout use rules; manual filters/actions remain available | Automated fallback checks; timeout screenshot at `screenshots/ai-rules-fallback.png` |
 | No decorative template or forbidden effects | Table-first viewport; restrained status palette; no gradients, glass, glow, emoji icons or decorative chart | Code and screenshots reviewed |
 | Type, alignment, motion and accessibility | Tabular numeric values, explicit status words, keyboard/focus handling, reduced motion; contrast pairs checked | Implemented; automated interaction checks passed. Full accessibility audit/200% zoom not claimed |
 | README, design intent, concise decisions and AI disclosure | Included at project root | Included |
-| Screenshots under load or recording | Eight app-only screenshots included; walkthrough in DEMO.md | Screenshot option satisfied |
+| Screenshots under load or recording | Eight automated captures plus two app-only AI/fallback screenshots; walkthrough in DEMO.md | Screenshot option satisfied |
 | Repository link | [Public GitHub repository](https://github.com/sanketnijhawan/CloudLabs-Spektra-Assignment) | Published; uploaded code independently cloned and tested |
 
 ## Verification scope

@@ -119,7 +119,7 @@ export async function getInsights() {
   try {
     const response = await fetch(`${base}/chat/completions`, {
       method: "POST",
-      signal: AbortSignal.timeout(6500),
+      signal: AbortSignal.timeout(20000),
       headers: {
         "Content-Type": "application/json",
         ...(key ? { Authorization: `Bearer ${key}` } : {}),
