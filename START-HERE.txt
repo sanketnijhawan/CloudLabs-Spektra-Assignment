@@ -1,0 +1,17 @@
+CloudLabs Workshop Operations
+
+1. Extract this ZIP.
+2. Use Node.js 24.
+3. Double-click start-windows.bat, or open a terminal in this folder and run npm start.
+4. Open http://localhost:3000
+5. Run npm test for backend verification.
+
+No install or API key is required to run the app.
+Optional UI tests/screenshots: npm ci, npm run test:ui,
+npx playwright install chromium, npm run screenshots.
+
+Optional: double-click verify-windows.bat to run tests and capture images.
+
+Read README.md for model setup and known verification limits.
+Read DEMO.md for the final checks and walkthrough.
+Eight screenshots are included. Configure your own local .env to reproduce the verified Gemini model path.

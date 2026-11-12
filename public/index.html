@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f8" />
+    <title>CloudLabs / Workshop operations</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a href="#searchInput" class="skip-link">Skip to environment filters</a>
+    <div class="main-wrap">
+      <header class="app-header">
+        <div class="session-heading">
+          <span class="brand">CloudLabs <span aria-hidden="true">/</span></span>
+          <div>
+            <h1>Workshop operations</h1>
+            <p>
+              AZ-104 · <span id="sessionSeats">120</span> learners · Simulated
+              workshop
+            </p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="button button-muted" id="guideButton">
+            Guide
+          </button>
+          <button type="button" class="button button-muted" id="activityButton">
+            <span data-icon="activity"></span> Activity
+          </button>
+          <button
+            type="button"
+            class="button button-muted"
+            id="refreshButton"
+            aria-label="Refresh workshop"
+          >
+            <span data-icon="refresh"></span
+            ><span class="refresh-label">Refresh</span>
+          </button>
+          <button type="button" class="button button-dark" id="triageButton">
+            Review at-risk
+          </button>
+        </div>
+      </header>
+      <main class="main-content" id="overview">
+        <section class="session-bar" aria-label="Whole-session totals">
+          <div class="session-stat">
+            <span class="metric-label">Active labs</span
+            ><strong class="metric-value" id="activeStat">—</strong
+            ><span class="metric-sub" id="activeDetail">Ready + in use</span>
+          </div>
+          <div class="session-stat">
+            <span class="metric-label">Failed</span
+            ><strong class="metric-value" id="failedStat">—</strong
+            ><span class="metric-sub">Need intervention</span>
+          </div>
+          <div class="session-stat">
+            <span class="metric-label">Est. session spend</span
+            ><strong class="metric-value" id="spendStat">—</strong
+            ><span class="metric-sub">USD · rate × runtime</span>
+          </div>
+          <div class="session-stat">
+            <span class="metric-label">Average completion</span
+            ><strong class="metric-value" id="completionStat">—</strong
+            ><span class="metric-sub">Across all learners</span>
+          </div>
+        </section>
+        <p
+          id="connectionNotice"
+          class="connection-notice"
+          role="status"
+          hidden
+        ></p>
+        <div class="content-grid">
+          <section
+            class="environment-panel"
+            id="environments"
+            aria-labelledby="environmentTitle"
+          >
+            <div class="panel-heading">
+              <h2 id="environmentTitle">
+                Learner environments <span id="environmentCount">—</span>
+              </h2>
+              <span class="panel-meta" id="lastSynced" role="status"
+                >Connecting…</span
+              >
+            </div>
+            <div
+              class="status-tabs"
+              role="group"
+              aria-label="Filter by environment status"
+            >
+              <button
+                type="button"
+                class="status-tab current"
+                data-status="all"
+                aria-pressed="true"
+              >
+                All <span id="tab-all">—</span>
+              </button>
+              <button
+                type="button"
+                class="status-tab"
+                data-status="failed"
+                aria-pressed="false"
+              >
+                Failed <span id="tab-failed">—</span>
+              </button>
+              <button
+                type="button"
+                class="status-tab"
+                data-status="in_use"
+                aria-pressed="false"
+              >
+                In use <span id="tab-in_use">—</span>
+              </button>
+              <button
+                type="button"
+                class="status-tab"
+                data-status="ready"
+                aria-pressed="false"
+              >
+                Ready <span id="tab-ready">—</span>
+              </button>
+              <button
+                type="button"
+                class="status-tab"
+                data-status="provisioning"
+                aria-pressed="false"
+              >
+                Provisioning <span id="tab-provisioning">—</span>
+              </button>
+              <button
+                type="button"
+                class="status-tab"
+                data-status="deprovisioned"
+                aria-pressed="false"
+              >
+                Deprovisioned <span id="tab-deprovisioned">—</span>
+              </button>
+            </div>
+            <div class="toolbar">
+              <label class="search-wrap"
+                ><span data-icon="search"></span
+                ><span class="sr-only">Search environments</span
+                ><input
+                  id="searchInput"
+                  type="search"
+                  placeholder="Name, lab ID or region"
+                  autocomplete="off"
+              /></label>
+              <label class="risk-check"
+                ><input id="riskToggle" type="checkbox" /> Needs
+                attention</label
+              >
+              <label class="sort-wrap"
+                ><span class="sr-only">Sort environments</span
+                ><select id="sortSelect" aria-label="Sort environments">
+                  <option value="attention:desc">Needs intervention</option>
+                  <option value="step_time:desc">Longest on step</option>
+                  <option value="progress:asc">Least progress</option>
+                  <option value="spend:desc">Highest spend</option>
+                  <option value="learner:asc">Learner A–Z</option>
+                  <option value="updated:desc">Recently updated</option>
+                </select></label
+              >
+            </div>
+            <p id="tableKeyboardHelp" class="sr-only">
+              Focus a learner row and use Up or Down to move, Home or End to
+              jump, and Enter to open details.
+            </p>
+            <div class="table-shell" id="tableShell" aria-busy="true">
+              <table
+                aria-label="Workshop learner environments"
+                aria-describedby="tableKeyboardHelp"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col" class="col-learner">Learner / lab</th>
+                    <th scope="col" class="col-state">State</th>
+                    <th scope="col" class="col-progress">Progress</th>
+                    <th scope="col" class="col-step">Current step</th>
+                    <th
+                      scope="col"
+                      class="col-time"
+                      title="Time on current step, or time in state when not in use"
+                    >
+                      Elapsed
+                    </th>
+                    <th scope="col" class="col-spend">Spend</th>
+                    <th scope="col" class="col-action">
+                      <span class="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="environmentRows">
+                  <tr>
+                    <td colspan="7">
+                      <div class="loading-message">
+                        <span class="loading-spinner" aria-hidden="true"></span
+                        >Loading live environments…
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <span id="footerCount">Loading environments…</span
+              ><span>Session totals stay global · Updates every 5s</span>
+            </div>
+          </section>
+          <aside class="attention-panel" aria-labelledby="attentionTitle">
+            <div class="attention-heading">
+              <h2 id="attentionTitle">Needs attention</h2>
+              <span id="attentionCount" class="count-pill">—</span>
+            </div>
+            <p class="rail-description">
+              Failures first, then the longest stalls.
+            </p>
+            <div id="attentionList" class="attention-list">
+              <p class="rail-description">Waiting for workshop data…</p>
+            </div>
+            <button type="button" id="viewAllRisks" class="rail-text-button">
+              Show all flagged learners <span data-icon="arrow-right"></span>
+            </button>
+            <p class="threshold-note">
+              20+ min on a step flags a review. It does not necessarily mean the
+              learner is stuck.
+            </p>
+          </aside>
+        </div>
+      </main>
+    </div>
+    <div
+      id="toastRegion"
+      class="toast-region"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+    <div id="drawerHost"></div>
+    <div id="triageHost"></div>
+  </body>
+</html>

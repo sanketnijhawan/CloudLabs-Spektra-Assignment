@@ -1,0 +1,24 @@
+{
+  "name": "cloudlabs-workshop-ops",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dependency-free, SQLite-backed workshop operations dashboard for 120 Azure lab environments.",
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "dev": "node --env-file-if-exists=.env --watch server/index.mjs",
+    "seed": "node scripts/seed.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:ui": "node --test tests/ui/*.test.mjs",
+    "screenshots": "node scripts/capture.mjs",
+    "check:ai": "node --env-file-if-exists=.env scripts/check-ai.mjs",
+    "check:a11y": "node scripts/check-accessibility.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "31.0.0",
+    "playwright": "1.62.1"
+  }
+}
