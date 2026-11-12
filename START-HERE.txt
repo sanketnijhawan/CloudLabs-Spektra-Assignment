@@ -14,4 +14,4 @@ Optional: double-click verify-windows.bat to run tests and capture images.
 
 Read README.md for model setup and known verification limits.
 Read DEMO.md for the final checks and walkthrough.
-Eight screenshots are included. Configure your own local .env to reproduce the verified Gemini model path.
+Ten screenshots are included: eight automated captures plus AI-assisted and timeout-fallback evidence. Configure your own local .env to reproduce the verified Gemini model path.
