@@ -4,6 +4,10 @@ A live instructor dashboard for a simulated Azure workshop with 120 learners.
 
 **Design intent:** Keep failures and long waits at the top of a dense, readable monitor, with whole-session totals always visible above it.
 
+![Workshop dashboard with 120 environments, session totals and failures prioritized](screenshots/workshop-desktop-120-rows.png)
+
+[Learner details](screenshots/learner-details.png) · [At-risk assessment: rules fallback](screenshots/at-risk-summary.png) · [Loading](screenshots/loading-state.png) · [Empty results](screenshots/empty-state.png) · [Connection loss](screenshots/connection-error.png) · [Mobile](screenshots/workshop-mobile.png) · [Recent activity](screenshots/recent-activity.png)
+
 ## Run
 
 Use Node.js 24 (minimum 22.16). The application has no runtime dependencies and creates its SQLite dataset automatically.
@@ -94,4 +98,4 @@ ChatGPT assisted with architecture, application code, interaction design, tests 
 
 `npm run check:a11y` runs a real-browser keyboard-only flow against a temporary workshop: Tab/Shift+Tab, focus outlines, Enter/Space activation, search/filter/sort, row arrows, dialog focus trapping/restoration and Retry. It also checks the reflow equivalent of 200% zoom using half-size CSS viewports at device scale 2, for 1440×960 and 1920×1080 screens. Results/screenshots go to `accessibility-results/`.
 
-The original three-layout browser check passed on Windows (user-provided output). A later native zoom screenshot exposed a collapsed table at a shorter CSS viewport. The layout now permits page scrolling on short screens, and the expanded browser check asserts table height plus visible header and learner row at five viewport sizes. The expanded check still needs a Windows run; the refinement browser cannot reach the local server. The DOM regression reproducing stale dialog-opener focus failed before the fix and passed after it. Exact native browser zoom and a manual accessibility sign-off remain pending; the reflow-equivalent check is not a substitute claim.
+All five keyboard/reflow layouts passed on Windows, including short desktop and 200%-equivalent viewports (candidate-provided terminal output). The checks assert usable table height and visible headers and learner rows. A subsequent native browser zoom screenshot showed the table and learner row visible with page scrolling after the height fix. The DOM regression reproducing stale dialog-opener focus failed before the fix and passed after it. These checks and screenshots do not constitute a complete manual accessibility audit.
